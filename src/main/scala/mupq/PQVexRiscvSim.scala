@@ -14,6 +14,7 @@ import spinal.lib.bus.misc.SizeMapping
 import spinal.lib.io.TriStateArray
 import spinal.lib.com.jtag.Jtag
 import spinal.lib.com.uart.Uart
+import spinal.lib.com.uart.sim.{UartDecoder,UartEncoder}
 import spinal.lib.com.jtag.sim.JtagTcp
 
 import vexriscv.VexRiscv
@@ -162,6 +163,8 @@ object PQVexRiscvSim {
         }
         println("\rUART decoder stopped")
       }
+
+      val uartEncoder = UartEncoder(dut.io.uart.rxd,uartBaudPeriod)
 
       var running = true
 
