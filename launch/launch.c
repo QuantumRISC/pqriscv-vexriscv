@@ -83,16 +83,17 @@ int main(int c, char **v, char*const*venv) {
   while(1) {
       ret=nreadline(outfd,buf,512);
       buf[511] = 0x00;
-      if(ret)
+
+      if(strncmp("WAITING FOR TCP JTAG CONNECTION",buf,31) == 0) {
+        buf[32] = 0;
         printf("%s",buf);
-      if(strncmp("WAITING FOR TCP JTAG CONNECTION",buf,31) == 0) break;
+        break;
+      }
   }
   ret=nreadline(outfd,buf,512);
   printf("Connect to %s for serial in/out.\n",slavename);
-  //dup2(masterfd,infd);
   int pidin = forkstream(outfd,masterfd,"<");
   int pidout = forkstream(masterfd,infd,">");
-  //close(masterfd);
   waitpid(pid,&status,0);
   return 0;
 }
